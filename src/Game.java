@@ -1,4 +1,5 @@
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
@@ -11,6 +12,7 @@ public class Game extends JPanel
     private Window window;
     private BufferStrategy bufferStrat;
     private boolean running;
+    private GameStateManager stateManager;
 
     public Game()
     {
@@ -21,9 +23,12 @@ public class Game extends JPanel
 
     public void initialize()
     {
+        if (running) return;
+
         window = new Window(this);
         window.createBufferStrategy(2);
         bufferStrat = window.getBufferStrategy();
+        stateManager = new GameStateManager();
     }
 
     public void startGame()
@@ -46,7 +51,7 @@ public class Game extends JPanel
 
             while (delta >= 1)
             {
-                tick();
+                stateManager.tick();
                 delta--;
                 toRender = true;
             }
@@ -75,11 +80,6 @@ public class Game extends JPanel
 
     }
 
-
-    public void tick()
-    {
-    }
-
     public void render()
     {
 
@@ -88,8 +88,10 @@ public class Game extends JPanel
             do
             {
                 Graphics2D brush = (Graphics2D) bufferStrat.getDrawGraphics();
-
-                draw(brush);
+                brush.setColor(getBackground());
+                brush.fillRect(0, 0, WIDTH, HEIGHT);
+                brush.setColor(Color.BLACK);
+                stateManager.draw(brush);
 
                 brush.dispose();
             } while (bufferStrat.contentsRestored());
@@ -97,14 +99,6 @@ public class Game extends JPanel
             bufferStrat.show();
         } while (bufferStrat.contentsLost());
 
-    }
-
-    public void draw(Graphics2D brush)
-    {
-        brush.drawLine(150, 100, 150, 250);
-        brush.drawLine(200, 100, 200, 250);
-        brush.drawLine(100, 150, 250, 150);
-        brush.drawLine(100, 200, 250, 200);
     }
 
     public static void main(String[] args)
