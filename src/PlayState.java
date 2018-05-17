@@ -16,20 +16,17 @@ public class PlayState extends GameState
 
     public void draw(Graphics2D brush)
     {
-        int topLeftX = board.getCenterX() - board.getBlockSize() / 2 - board.getBlockSize();
-        int topLeftY = board.getCenterY() - board.getBlockSize() / 2 - board.getBlockSize();
-
-        brush.drawLine(topLeftX + board.getBlockSize(), topLeftY, topLeftX + board.getBlockSize(), topLeftY + board.getBlockSize() * 3);
-        brush.drawLine(topLeftX + board.getBlockSize() * 2, topLeftY, topLeftX + board.getBlockSize() * 2, topLeftY + board.getBlockSize() * 3);
-        brush.drawLine(topLeftX, topLeftY + board.getBlockSize(), topLeftX + board.getBlockSize() * 3, topLeftY + board.getBlockSize());
-        brush.drawLine(topLeftX, topLeftY + board.getBlockSize() * 2, topLeftX + board.getBlockSize() * 3, topLeftY + board.getBlockSize() * 2);
+        brush.drawLine(board.getTopLeftX() + board.getBlockSize(), board.getTopLeftY(), board.getTopLeftX() + board.getBlockSize(), board.getTopLeftY() + board.getBlockSize() * 3);
+        brush.drawLine(board.getTopLeftX() + board.getBlockSize() * 2, board.getTopLeftY(), board.getTopLeftX() + board.getBlockSize() * 2, board.getTopLeftY() + board.getBlockSize() * 3);
+        brush.drawLine(board.getTopLeftX(), board.getTopLeftY() + board.getBlockSize(), board.getTopLeftX() + board.getBlockSize() * 3, board.getTopLeftY() + board.getBlockSize());
+        brush.drawLine(board.getTopLeftX(), board.getTopLeftY() + board.getBlockSize() * 2, board.getTopLeftX() + board.getBlockSize() * 3, board.getTopLeftY() + board.getBlockSize() * 2);
 
         char[] blocks = board.getBlocks();
         for (int i = 0; i < blocks.length; i++)
         {
             char value = blocks[i];
-            int toDrawX = topLeftX + board.getBlockSize() * (i / 3);
-            int toDrawY = topLeftY + board.getBlockSize() * (i % 3);
+            int toDrawX = board.getTopLeftX() + board.getBlockSize() * (i / 3);
+            int toDrawY = board.getTopLeftY() + board.getBlockSize() * (i % 3);
 
             if (value == Board.PLAYER_O)
                 board.drawO(toDrawX, toDrawY, brush);

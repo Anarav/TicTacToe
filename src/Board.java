@@ -2,22 +2,29 @@ import java.awt.Graphics2D;
 
 public class Board
 {
-    private int centerX;
-    private int centerY;
+    private int topLeftX;
+    private int topLeftY;
     private int blockSize;
     public char blocks[];
     private int drawOffset;
+    private CollisionBox boardCB;
+    private CollisionBox blocksCB[];
     public static final char BLANK = 0, PLAYER_X = 1, PLAYER_O = 2;
 
     public Board(int blockSize)
     {
-        centerX = Game.WIDTH / 2;
-        centerY = Game.HEIGHT / 2;
+        topLeftX = Game.WIDTH / 2 - blockSize - blockSize / 2;
+        topLeftY = Game.HEIGHT / 2 - blockSize - blockSize / 2;
         this.blockSize = blockSize;
         drawOffset = blockSize / 5;
-        blocks = new char[]{BLANK, BLANK, BLANK,
-                BLANK, BLANK, BLANK,
-                BLANK, BLANK, BLANK};
+        boardCB = new CollisionBox(topLeftX, topLeftY, blockSize * 3, blockSize * 3);
+        blocks = new char[9];
+        blocksCB = new CollisionBox[9];
+        for (int i = 0; i < 9; i++)
+        {
+            blocks[i] = BLANK;
+            blocksCB[i] = new CollisionBox(topLeftX + blockSize * (i / 3), topLeftY + blockSize * (i % 3), blockSize, blockSize);
+        }
     }
 
     public boolean hasWon()
@@ -25,14 +32,14 @@ public class Board
         return (checkDiagonals() || checkHorizontals() || checkVerticals());
     }
 
-    public int getCenterX()
+    public int getTopLeftX()
     {
-        return centerX;
+        return topLeftX;
     }
 
-    public int getCenterY()
+    public int getTopLeftY()
     {
-        return centerY;
+        return topLeftY;
     }
 
     public int getBlockSize()
@@ -91,5 +98,15 @@ public class Board
                 return true;
 
         return false;
+    }
+
+    public CollisionBox getBoardCB()
+    {
+        return boardCB;
+    }
+
+    public CollisionBox[] getBlocksCB()
+    {
+        return blocksCB;
     }
 }

@@ -12,7 +12,6 @@ public class GameStateManager
 
     public void switchState(GameState runningState)
     {
-
         this.runningState = runningState;
         runningState.init();
     }
