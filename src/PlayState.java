@@ -16,12 +16,26 @@ public class PlayState extends GameState
 
     public void draw(Graphics2D brush)
     {
-        int topleftX = board.getCenterX() - (board.getBlockSize() / 2) - board.getBlockSize();
-        int topleftY = board.getCenterY() - (board.getBlockSize() / 2) - board.getBlockSize();
+        int topLeftX = board.getCenterX() - board.getBlockSize() / 2 - board.getBlockSize();
+        int topLeftY = board.getCenterY() - board.getBlockSize() / 2 - board.getBlockSize();
 
-        brush.drawLine(topleftX + board.getBlockSize(), topleftY, topleftX + board.getBlockSize(), topleftY + board.getBlockSize() * 3);
-        brush.drawLine(topleftX + board.getBlockSize() * 2, topleftY, topleftX + board.getBlockSize() * 2, topleftY + board.getBlockSize() * 3);
-        brush.drawLine(topleftX, topleftY + board.getBlockSize(), topleftX + board.getBlockSize() * 3, topleftY + board.getBlockSize());
-        brush.drawLine(topleftX, topleftY + board.getBlockSize() * 2, topleftX + board.getBlockSize() * 3, topleftY + board.getBlockSize() * 2);
+        brush.drawLine(topLeftX + board.getBlockSize(), topLeftY, topLeftX + board.getBlockSize(), topLeftY + board.getBlockSize() * 3);
+        brush.drawLine(topLeftX + board.getBlockSize() * 2, topLeftY, topLeftX + board.getBlockSize() * 2, topLeftY + board.getBlockSize() * 3);
+        brush.drawLine(topLeftX, topLeftY + board.getBlockSize(), topLeftX + board.getBlockSize() * 3, topLeftY + board.getBlockSize());
+        brush.drawLine(topLeftX, topLeftY + board.getBlockSize() * 2, topLeftX + board.getBlockSize() * 3, topLeftY + board.getBlockSize() * 2);
+
+        char[] blocks = board.getBlocks();
+        for (int i = 0; i < blocks.length; i++)
+        {
+            char value = blocks[i];
+            int toDrawX = topLeftX + board.getBlockSize() * (i / 3);
+            int toDrawY = topLeftY + board.getBlockSize() * (i % 3);
+
+            if (value == Board.PLAYER_O)
+                board.drawO(toDrawX, toDrawY, brush);
+            else if (value == Board.PLAYER_X)
+                board.drawX(toDrawX, toDrawY, brush);
+        }
     }
+
 }
