@@ -13,6 +13,7 @@ public class Game extends JPanel
     private BufferStrategy bufferStrat;
     private boolean running;
     private GameStateManager stateManager;
+    private InputHandler input;
 
     public Game()
     {
@@ -29,6 +30,10 @@ public class Game extends JPanel
         window.createBufferStrategy(2);
         bufferStrat = window.getBufferStrategy();
         stateManager = new GameStateManager();
+        input = new InputHandler();
+        window.addKeyListener(input);
+        window.addMouseListener(input);
+        window.addMouseMotionListener(input);
     }
 
     public void startGame()

@@ -33,6 +33,7 @@ public class PlayState extends GameState
             else if (value == Board.PLAYER_X)
                 board.drawX(toDrawX, toDrawY, brush);
         }
+
     }
 
 }
