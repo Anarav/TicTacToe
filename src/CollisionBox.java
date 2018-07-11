@@ -1,5 +1,4 @@
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 public class CollisionBox
 {
@@ -18,21 +17,19 @@ public class CollisionBox
     {
         makeBox();
         testCB.makeBox();
-        if (this.collisionBox.intersects(testCB.collisionBox))
-            return true;
 
-        return false;
+        return this.collisionBox.intersects(testCB.collisionBox);
     }
 
-    public CollisionBox isColliding(ArrayList<CollisionBox> testCBs)
+    public int isColliding(CollisionBox[] testCBs)
     {
-        for (CollisionBox cb : testCBs)
+        for (int i = 0; i < testCBs.length; i++)
         {
-            if (this.isColliding(cb))
-                return cb;
+            if (this.isColliding(testCBs[i]))
+                return i;
         }
 
-        return null;
+        return -1;
     }
 
     public void makeBox()
@@ -70,4 +67,13 @@ public class CollisionBox
         this.y = y;
     }
 
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
+    }
 }

@@ -5,11 +5,15 @@ public class InputHandler implements KeyListener, MouseMotionListener, MouseList
     public static int mouseX;
     public static int mouseY;
     public static CollisionBox mouseCB;
+    public static boolean clicked;
     public static final int CURSOR_SIZE = 2;
 
-    public InputHandler()
+    public InputHandler(Game game)
     {
         mouseCB = new CollisionBox(0, 0, CURSOR_SIZE, CURSOR_SIZE);
+        game.getWindow().addKeyListener(this);
+        game.getWindow().addMouseListener(this);
+        game.getWindow().addMouseMotionListener(this);
     }
 
     public void keyTyped(KeyEvent e)
@@ -37,10 +41,12 @@ public class InputHandler implements KeyListener, MouseMotionListener, MouseList
 
     public void mousePressed(MouseEvent e)
     {
+        clicked = true;
     }
 
     public void mouseReleased(MouseEvent e)
     {
+        clicked = false;
     }
 
     public void mouseEntered(MouseEvent e)

@@ -30,10 +30,7 @@ public class Game extends JPanel
         window.createBufferStrategy(2);
         bufferStrat = window.getBufferStrategy();
         stateManager = new GameStateManager();
-        input = new InputHandler();
-        window.addKeyListener(input);
-        window.addMouseListener(input);
-        window.addMouseMotionListener(input);
+        input = new InputHandler(this);
     }
 
     public void startGame()
@@ -83,6 +80,12 @@ public class Game extends JPanel
             }
         }
 
+    }
+
+
+    public Window getWindow()
+    {
+        return window;
     }
 
     public void render()

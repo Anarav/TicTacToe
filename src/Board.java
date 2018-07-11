@@ -5,9 +5,9 @@ public class Board
     private int topLeftX;
     private int topLeftY;
     private int blockSize;
-    public char blocks[];
+    private char blocks[];
     private int drawOffset;
-    private CollisionBox boardCB;
+    private CollisionBox boardCB, resetCB;
     private CollisionBox blocksCB[];
     public static final char BLANK = 0, PLAYER_X = 1, PLAYER_O = 2;
 
@@ -18,18 +18,35 @@ public class Board
         this.blockSize = blockSize;
         drawOffset = blockSize / 5;
         boardCB = new CollisionBox(topLeftX, topLeftY, blockSize * 3, blockSize * 3);
+        resetCB = new CollisionBox(topLeftX + blockSize * 3, topLeftY + blockSize * 3 / 2 - blockSize / 4, blockSize / 2, blockSize / 2);
         blocks = new char[9];
         blocksCB = new CollisionBox[9];
         for (int i = 0; i < 9; i++)
         {
             blocks[i] = BLANK;
-            blocksCB[i] = new CollisionBox(topLeftX + blockSize * (i / 3), topLeftY + blockSize * (i % 3), blockSize, blockSize);
+            blocksCB[i] = new CollisionBox(topLeftX + blockSize * (i % 3), topLeftY + blockSize * (i / 3), blockSize, blockSize);
         }
     }
 
-    public boolean hasWon()
+    public void resetBoard()
     {
-        return (checkDiagonals() || checkHorizontals() || checkVerticals());
+        for (int i = 0; i < 9; i++)
+            blocks[i] = BLANK;
+
+    }
+
+    public String hasWon()
+    {
+        int index = -1;
+
+        if ((index = checkHorizontals()) != -1)
+            return "H" + index;
+        else if ((index = checkVerticals()) != -1)
+            return "V" + index;
+        else if ((index = checkDiagonals()) != -1)
+            return "D" + index;
+
+        return null;
     }
 
     public int getTopLeftX()
@@ -71,33 +88,33 @@ public class Board
         brush.drawOval(topLeftX + drawOffset, topLeftY + drawOffset, blockSize - 2 * drawOffset, blockSize - 2 * drawOffset);
     }
 
-    private boolean checkDiagonals()
+    private int checkDiagonals()
     {
         if (blocks[0] != BLANK && blocks[0] == blocks[4] && blocks[4] == blocks[8])
-            return true;
+            return 0;
 
         if (blocks[2] != BLANK && blocks[2] == blocks[4] && blocks[4] == blocks[6])
-            return true;
+            return 2;
 
-        return false;
+        return -1;
     }
 
-    private boolean checkHorizontals()
+    private int checkHorizontals()
     {
         for (int i = 0; i < 9; i += 3)
-            if (blocks[i] != BLANK && (blocks[i] == blocks[i + 1] && blocks[i + 3] == blocks[i + 2]))
-                return true;
+            if (blocks[i] != BLANK && (blocks[i] == blocks[i + 1] && blocks[i + 1] == blocks[i + 2]))
+                return i;
 
-        return false;
+        return -1;
     }
 
-    private boolean checkVerticals()
+    private int checkVerticals()
     {
         for (int i = 0; i < 3; i++)
             if (blocks[i] != BLANK && (blocks[i] == blocks[i + 3] && blocks[i + 3] == blocks[i + 6]))
-                return true;
+                return i;
 
-        return false;
+        return -1;
     }
 
     public CollisionBox getBoardCB()
@@ -105,8 +122,14 @@ public class Board
         return boardCB;
     }
 
+    public CollisionBox getResetCB()
+    {
+        return resetCB;
+    }
+
     public CollisionBox[] getBlocksCB()
     {
         return blocksCB;
     }
+
 }
