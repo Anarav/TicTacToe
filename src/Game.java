@@ -5,21 +5,36 @@ import java.awt.image.BufferStrategy;
 
 public class Game extends JPanel
 {
-    //TODO add options to modify height and width and scale through constructor
-    public static final int SCALE = 1;
-    public static final int HEIGHT = 720 * SCALE;
-    public static final int WIDTH = HEIGHT * 16 / 9 * SCALE;
+    //default SCALE = 1, HEIGHT = 720 and WIDTH = 1280
+    public static int SCALE;
+    public static int HEIGHT;
+    public static int WIDTH;
+
     private Window window;
     private BufferStrategy bufferStrat;
     private boolean running;
     private GameStateManager stateManager;
     private InputHandler input;
 
-    public Game()
+    public Game(int height, int scale)
     {
+        SCALE = scale;
+        HEIGHT = height * SCALE;
+        WIDTH = HEIGHT * 16 / 9 * SCALE;
+
         initialize();
         running = true;
         startGame();
+    }
+
+    public Game(int height)
+    {
+        this(height, 1);
+    }
+
+    public Game()
+    {
+        this(720, 1);
     }
 
     public void initialize()
@@ -48,7 +63,6 @@ public class Game extends JPanel
             currentTime = System.nanoTime();
             delta += (currentTime - tickTimer) / TICK_INTERVAL;
             tickTimer = currentTime;
-            //TODO add option to have unlimited frames for games that require frequent renders
             boolean toRender = false;
 
             while (delta >= 1)
