@@ -45,10 +45,20 @@ public class Board
             return "V" + index;
         else if ((index = checkDiagonals()) != -1)
             return "D" + index;
+        else if (boardIsFilled())
+            return "TIE";
 
         return null;
     }
 
+    public boolean boardIsFilled()
+    {
+        for (char c : blocks)
+            if (c == Board.BLANK)
+                return false;
+
+        return true;
+    }
     public int getTopLeftX()
     {
         return topLeftX;

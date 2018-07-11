@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class PlayState extends GameState
@@ -8,7 +9,6 @@ public class PlayState extends GameState
 
     public void init()
     {
-        //TODO add option to change blockSize
         board = new Board(100);
         currentTurn = (char) (Math.random() * 2 + 1);
     }
@@ -68,28 +68,47 @@ public class PlayState extends GameState
                 board.drawX(toDrawX, toDrawY, brush);
         }
 
-        //TODO add display of who won
         if (winData != null)
         {
-            int index = Character.getNumericValue(winData.charAt(1));
-            int temp = 0;
-            switch (winData.charAt(0))
-            {
-                case 'H':
-                    temp = board.getTopLeftY() + index / 3 * board.getBlockSize() + board.getBlockSize() / 2; //get top left y, adjust to the appropriate top left of the "won" cell and then bring it to the middle of the cell
-                    brush.drawLine(board.getTopLeftX(), temp, board.getTopLeftX() + board.getBlockSize() * 3, temp);
-                    break;
-                case 'V':
-                    temp = board.getTopLeftX() + index % 3 * board.getBlockSize() + board.getBlockSize() / 2; //get the top left x, adjust to the appropriate horizontal "won" cell and then bring it to the middle of the cell
-                    brush.drawLine(temp, board.getTopLeftY(), temp, board.getTopLeftY() + board.getBlockSize() * 3);
-                    break;
-                case 'D':
-                    break;
+            String winText;
 
-                default:
-                    System.out.println("There was an unexpected error in win condition!");
-                    break;
+            if (winData.equals("TIE"))
+                winText = "It was a tie!";
+            else
+            {
+                int index = Character.getNumericValue(winData.charAt(1));
+                int temp = 0;
+                switch (winData.charAt(0))
+                {
+                    case 'H':
+                        temp = board.getTopLeftY() + index / 3 * board.getBlockSize() + board.getBlockSize() / 2; //get top left y, adjust to the appropriate top left of the "won" cell and then bring it to the middle of the cell
+                        brush.drawLine(board.getTopLeftX(), temp, board.getTopLeftX() + board.getBlockSize() * 3, temp);
+                        break;
+                    case 'V':
+                        temp = board.getTopLeftX() + index % 3 * board.getBlockSize() + board.getBlockSize() / 2; //get the top left x, adjust to the appropriate horizontal "won" cell and then bring it to the middle of the cell
+                        brush.drawLine(temp, board.getTopLeftY(), temp, board.getTopLeftY() + board.getBlockSize() * 3);
+                        break;
+                    case 'D':
+                        break;
+
+                    default:
+                        System.out.println("There was an unexpected error in win condition!");
+                        break;
+                }
+
+                if (blocks[index] == Board.PLAYER_O)
+                    winText = "Congratulations, You won Player O";
+                else
+                    winText = "Congratulations, You won Player X";
             }
+            brush.fillRoundRect(board.getTopLeftX(), board.getTopLeftY() - board.getBlockSize() - 20, board.getBlockSize() * 3, board.getBlockSize(), 30, 30);
+            brush.setColor(Color.WHITE);
+            brush.setFont(brush.getFont().deriveFont(18f));
+
+            brush.drawString(winText, board.getTopLeftX() + (board.getBlockSize() * 3 - brush.getFontMetrics().stringWidth(winText)) / 2, board.getTopLeftY() - board.getBlockSize() * 3 / 5);
+
+            brush.setColor(Color.BLACK);
+
         }
 
     }
